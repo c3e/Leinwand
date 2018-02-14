@@ -1,8 +1,8 @@
 #include <ESP8266WiFi.h>
 #include <PubSubClient.h>
 
-int schalterHoch = 13; //5
-int schalterRunter = 15; //4
+int schalterHoch = 13;
+int schalterRunter = 15;
 boolean valueHoch = 1;
 boolean valueRunter = 1;
 boolean valueHalt = 1;
@@ -10,7 +10,7 @@ boolean valueHalt = 1;
  
 const char* ssid = "foobar";
 const char* password =  "";
-const char* mqttServer = "";
+const char* mqttServer = "mqtt.chaospott.de";
 const int mqttPort = 1883;
 const char* mqttUser = "";
 const char* mqttPassword = "";
@@ -60,15 +60,15 @@ void callback(char* topic, byte* payload, unsigned int length) {
 
 void auslesen() {
 	if(digitalRead(schalterRunter) && !digitalRead(schalterHoch) && valueRunter) {
-		client.publish("foobar/oben/lounge/leinwand", "down");
+		client.publish("foobar/oben/lounge/leinwand/action", "down");
     valueRunter = 0;	
 	}
 	else if(!digitalRead(schalterRunter) && digitalRead(schalterHoch) && valueHoch) {
-		client.publish("foobar/oben/lounge/leinwand", "up");
+		client.publish("foobar/oben/lounge/leinwand/action", "up");
     valueHoch = 0;
 	}
 	else if(!digitalRead(schalterRunter) && !digitalRead(schalterHoch) && valueHalt) {
-		client.publish("foobar/oben/lounge/leinwand", "halt");
+		client.publish("foobar/oben/lounge/leinwand/action", "halt");
     valueHalt  = 0;
 	}
 
